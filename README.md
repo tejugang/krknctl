@@ -35,8 +35,30 @@ This allows users to focus solely on implementing chaos engineering practices wi
 
 <br/>
 
+## krkn-operator backup and restore
+
+Back up and restore krkn-operator administrative configuration through the
+Kubernetes API. The destination cluster must have the operator CRDs installed.
+
+```bash
+krknctl operator backup krkn-operator-system
+krknctl operator backup krkn-operator-system \
+  --kubeconfig ~/.kube/config \
+  --output ./backups
+krknctl operator restore \
+  ./backups/krkn-backup-<timestamp>.tar.gz \
+  krkn-operator-system \
+  --kubeconfig ~/.kube/config
+```
+
+Use `--output` and `--kubeconfig` to override defaults, or use `--kind`
+with `--cluster-name` for a KinD cluster. Archives include users, groups,
+targets, providers, and operator-managed credentials; cloud credentials, Files
+page data, runtime status, and the JWT signing Secret are excluded. Treat
+archives as sensitive files and do not commit them to source control.
+
+<br/>
 
 ## Documentation:
 
 Instructions on how to setup, configure and run Kraken can be found in the [documentation](https://krkn-chaos.dev/docs/krknctl/).
-
